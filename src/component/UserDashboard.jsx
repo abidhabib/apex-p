@@ -181,6 +181,8 @@ const UserDashboard = () => {
                 <div className="eaning-sex">
                             <div className="card">
                                 <div className="img-text">
+                                <Link to="/dailytasks" className="img-text">
+
                                     <img
                                         style={{
                                             width: "34px",
@@ -193,10 +195,14 @@ const UserDashboard = () => {
                                     <p style={{ fontSize: "10px" }}>
                                         DAILY TASK
                                     </p>
+                                </Link>
                                 </div>
-                            </div>
+                            </div>                               
+
                             <div className="card">
                                 <div className="img-text">
+                                <Link to="/wallet" className="img-text">
+ 
                                     <img
                                         style={{
                                             width: "34px",
@@ -207,6 +213,7 @@ const UserDashboard = () => {
                                         alt=""
                                     />
                                     <p>WALLET</p>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="card">

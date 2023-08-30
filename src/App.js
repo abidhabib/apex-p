@@ -19,6 +19,8 @@ import UserProfileUpdate from './component/UserProfileUpdate';
 import AccountSettig from './component/AccountSetting';
 import Protected from './component/ProtectedRoute';
 import { Dashboard } from '@mui/icons-material';
+import DailyTasks from './component/DailyTasks';
+import Wallet from './component/Wallet';
 
 function App() {
   const [paymentOk, setPaymentOk] = useState(false); 
@@ -98,6 +100,8 @@ console.log(checkapproved+"--checkapproved");
 
 <Route path="/setting" element={(checklogin && checkapproved) ? <AccountSettig/> : <Fourzerofour />} />
 
+<Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks/> : <Fourzerofour />} />
+<Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet/> : <Fourzerofour />} />
 
 
             {/* Use a ternary operator for conditional rendering */}
