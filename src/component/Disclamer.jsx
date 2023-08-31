@@ -25,13 +25,13 @@ const Disclamer = ({fee}) => {
     marginBottom: "20px",
     color: "white"
 }
-}>Joining Fees {fee} <span
+}>Joining Fees <span
 style={
 {
     color: "green"
 }
 }
->PKR</span> </h2>
+>{fee} PKR</span> </h2>
     <ul className="lists">
         <li className="list">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

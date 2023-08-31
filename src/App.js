@@ -28,7 +28,8 @@ function App() {
   const [checkapproved, setApproved] = useState();
 const [userid, setuserid] = useState();
 const [jfees, setFees] = useState(null);
-
+const [accname, setAccname] = useState('');
+const [accnumber, setAccnumber] = useState('');
 useEffect(() => {
   if (userid) {
     const docRef = doc(db, 'settings', 'KFwh6z2LS0msPDnZRaLq');
@@ -36,6 +37,8 @@ useEffect(() => {
       .then((docSnap) => {
         if (docSnap.exists()) {
           const joiningFee = docSnap.data();
+          setAccname(joiningFee.accname);
+          setAccnumber(joiningFee.accnumber);
           setFees(joiningFee.fees);
         } else {
           console.log('Document does not exist');
@@ -109,7 +112,7 @@ setApproved(approved);
             
             />
             <Route path="/home" element={<Home />} />
-            <Route path="/pyment" element={checklogin ? <Pyment  fee={jfees}/> : <Fourzerofour />}
+            <Route path="/pyment" element={checklogin ? <Pyment  fee={jfees}  accname={accname} accnumber={accnumber}/> : <Fourzerofour />}
              />
             <Route path="/disclamer" element={( checklogin && !paymentOk) ? <Disclamer  fee={jfees}/> : <PymentOkorNot />} />
             <Route path='/processing' element={ (checklogin && paymentOk) ? <PymentOkorNot /> : <Fourzerofour />}/>

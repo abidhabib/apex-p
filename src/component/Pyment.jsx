@@ -9,7 +9,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import NavBAr from "./NavBAr";
 
 
-const Pyment = ({fee}) => {
+const Pyment = ({fee,accname,accnumber}) => {
     const [trx_id, setTrxId] = useState("");
     const [sender_name, setSenderName] = useState("");
     const [sender_number, setSenderPhone] = useState("");
@@ -48,12 +48,7 @@ const Pyment = ({fee}) => {
             <div className="box">        <NavBAr/>
 
                 <form className="form"  onSubmit={handleFormSubmit}>
-                    <div className="loading-wave">
-                        <div className="loading-bar"></div>
-                        <div className="loading-bar"></div>
-                        <div className="loading-bar"></div>
-                        <div className="loading-bar"></div>
-                    </div>
+                   
 
                     <h2>Submit Your Transaction Details Carefully</h2>
                     <h3
@@ -87,7 +82,7 @@ const Pyment = ({fee}) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    03451234567
+                                    {accnumber}
                                 </span>
                             </span>
                         </li>
@@ -112,7 +107,7 @@ const Pyment = ({fee}) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    Ahmed Khan
+                                        {accname}
                                 </span>{" "}
                             </span>
                         </li>
