@@ -21,7 +21,7 @@ import Protected from './component/ProtectedRoute';
 import { Dashboard } from '@mui/icons-material';
 import DailyTasks from './component/DailyTasks';
 import Wallet from './component/Wallet';
-
+import About from './component/About';
 function App() {
   const [paymentOk, setPaymentOk] = useState(false); 
   const [checklogin, setCheckLogin] = useState(false);
@@ -125,6 +125,7 @@ setApproved(approved);
 
 <Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
 <Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet/> : <Fourzerofour />} />
+<Route path="/about" element={(checklogin && checkapproved) ? <About/> : <Fourzerofour />} />
 
 
             {/* Use a ternary operator for conditional rendering */}

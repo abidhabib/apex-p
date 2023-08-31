@@ -218,6 +218,7 @@ const UserDashboard = () => {
                             </div>
                             <div className="card">
                                 <div className="img-text">
+                                    
                                     <img
                                         style={{
                                             width: "34px",
@@ -232,6 +233,7 @@ const UserDashboard = () => {
                             </div>
                             <div className="card">
                                 <div className="img-text">
+                                <Link to="/about" className="img-text">
                                     <img
                                         style={{
                                             width: "34px",
@@ -242,6 +244,7 @@ const UserDashboard = () => {
                                         alt=""
                                     />
                                     <p>ABOUT</p>
+                                </Link>
                                 </div>
                             </div>
                         </div></div>
