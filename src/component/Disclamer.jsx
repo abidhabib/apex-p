@@ -3,9 +3,8 @@ import './disclamer.css'
 import Pyment from './Pyment'
 import { Link } from 'react-router-dom'
 import NavBAr from './NavBAr'
-const Disclamer = () => {
+const Disclamer = ({fee}) => {
 
-   
 
   return (
 <>
@@ -26,7 +25,7 @@ const Disclamer = () => {
     marginBottom: "20px",
     color: "white"
 }
-}>Joining Fees 800 <span
+}>Joining Fees {fee} <span
 style={
 {
     color: "green"

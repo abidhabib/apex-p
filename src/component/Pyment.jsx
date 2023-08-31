@@ -9,7 +9,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import NavBAr from "./NavBAr";
 
 
-const Pyment = () => {
+const Pyment = ({fee}) => {
     const [trx_id, setTrxId] = useState("");
     const [sender_name, setSenderName] = useState("");
     const [sender_number, setSenderPhone] = useState("");
@@ -63,7 +63,7 @@ const Pyment = () => {
                             marginBottom: "20px",
                         }}
                     >
-                        Joining Fee 800 PKR
+                        Joining Fee {fee} PKR
                     </h3>
                     <ul className="lists">
                         <li className="list">

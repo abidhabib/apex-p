@@ -12,7 +12,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase.config';
 import Fourzerofour from './component/Fourzerofour';
 import UserDashboard from './component/UserDashboard';
-import { onSnapshot, doc } from 'firebase/firestore';
+import { onSnapshot, doc, getDoc, collection } from 'firebase/firestore';
 import { db } from "./firebase.config";
 import PymentOkorNot from './component/PymentOkorNot';
 import UserProfileUpdate from './component/UserProfileUpdate';
@@ -27,6 +27,30 @@ function App() {
   const [checklogin, setCheckLogin] = useState(false);
   const [checkapproved, setApproved] = useState();
 const [userid, setuserid] = useState();
+const [jfees, setFees] = useState(null);
+
+useEffect(() => {
+  if (userid) {
+    const docRef = doc(db, 'settings', 'KFwh6z2LS0msPDnZRaLq');
+    getDoc(docRef)
+      .then((docSnap) => {
+        if (docSnap.exists()) {
+          const joiningFee = docSnap.data();
+          setFees(joiningFee.fees);
+        } else {
+          console.log('Document does not exist');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching document:', error);
+      });
+  }
+}, [userid]);
+
+useEffect(() => {
+  // This will log the updated fees whenever it changes
+}, [jfees]);
+
 useEffect(() => {
   if (!userid) {
     return; // No need to proceed if userid is not set
@@ -41,7 +65,6 @@ useEffect(() => {
 const paymentOkValue = Data.pyment_ok;
 const approved=Data.approved;
 setApproved(approved);
-console.log(checkapproved+"--checkapproved");
 
       setPaymentOk(paymentOkValue); // Update the state with payment_ok value
     } else {
@@ -68,8 +91,6 @@ console.log(checkapproved+"--checkapproved");
       unsubscribe();
     };
   }, []);
-  console.log(paymentOk+"--paymentOk");
-
   return (
     
     <UserAuthContext>
@@ -88,10 +109,9 @@ console.log(checkapproved+"--checkapproved");
             
             />
             <Route path="/home" element={<Home />} />
-            <Route path="/pyment" element={
-            checklogin ? <Pyment /> : <Fourzerofour />}
+            <Route path="/pyment" element={checklogin ? <Pyment  fee={jfees}/> : <Fourzerofour />}
              />
-            <Route path="/disclamer" element={( checklogin && !paymentOk) ? <Disclamer/> : <PymentOkorNot />} />
+            <Route path="/disclamer" element={( checklogin && !paymentOk) ? <Disclamer  fee={jfees}/> : <PymentOkorNot />} />
             <Route path='/processing' element={ (checklogin && paymentOk) ? <PymentOkorNot /> : <Fourzerofour />}/>
               <Route path='/dashboard' element={checkapproved ? <UserDashboard /> : <PymentOkorNot/>}/>
 
