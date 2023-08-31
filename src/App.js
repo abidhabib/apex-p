@@ -100,7 +100,7 @@ console.log(checkapproved+"--checkapproved");
 
 <Route path="/setting" element={(checklogin && checkapproved) ? <AccountSettig/> : <Fourzerofour />} />
 
-<Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks/> : <Fourzerofour />} />
+<Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
 <Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet/> : <Fourzerofour />} />
 
 
