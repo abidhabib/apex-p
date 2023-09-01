@@ -41,20 +41,17 @@ useEffect(() => {
     fetchProducts();
   }, []);
 
-  const handleCollectClick = async (productId) => {
+  const handleCollectClick = async (productId, rewardAmount) => {
     const userDocRef = doc(db, 'users', userId);
     const clickedButtonsCollection = collection(userDocRef, 'clickedButtons');
+    
     try {
       const userDoc = await getDoc(userDocRef);
-
-      if (!userDoc.exists()) {
-        // User document doesn't exist, create it
-        await setDoc(userDocRef, {});
-      }
-
+      let updatedBalance = userDoc.data().balance + rewardAmount; // Assuming the user's balance is stored as a number
+  
       const clickedButtonQuery = query(clickedButtonsCollection, where('productId', '==', productId));
       const clickedButtonsSnapshot = await getDocs(clickedButtonQuery);
-
+  
       if (!clickedButtonsSnapshot.empty) {
         // Button has already been clicked by the user
         toast.error('You have already Collected');
@@ -64,13 +61,18 @@ useEffect(() => {
           productId,
           timestamp: Timestamp.now(),
         });
-
+  
+        // Update the user's balance
+        await setDoc(userDocRef, { balance: updatedBalance }, { merge: true });
+  
         // Perform any other actions, e.g., redirect user to the product link
       }
     } catch (error) {
       console.error('Error handling button click:', error);
     }
   };
+  
+  
   console.log(userId);
   return (
     <>
@@ -83,14 +85,14 @@ useEffect(() => {
             <p className="notificationHeading">Task {taskCounter++}</p>
             <p className="notificationPara">{product.description}</p>
             <div className="buttonContainer">
-              <button
-                className="AllowBtn"
-                onClick={() => handleCollectClick(product.id)}
-              >
-                <a href={product.link} target="_blank" rel="noopener noreferrer">
-                  Collect 
-                </a>
-              </button>
+            <button
+  className="AllowBtn"
+  onClick={() => handleCollectClick(product.id, product.reward)}
+>
+  <a href={product.Link}  rel="noopener noreferrer">
+    Collect 
+  </a>
+</button>
             </div>
           </div>
         ))}
