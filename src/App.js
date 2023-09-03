@@ -30,6 +30,7 @@ const [userid, setuserid] = useState();
 const [jfees, setFees] = useState(null);
 const [accname, setAccname] = useState('');
 const [accnumber, setAccnumber] = useState('');
+const [price , setPrice] = useState(0);
 useEffect(() => {
   if (userid) {
     const docRef = doc(db, 'settings', 'KFwh6z2LS0msPDnZRaLq');
@@ -40,6 +41,7 @@ useEffect(() => {
           setAccname(joiningFee.accname);
           setAccnumber(joiningFee.accnumber);
           setFees(joiningFee.fees);
+          setPrice(joiningFee.coinPrice);
         } else {
           console.log('Document does not exist');
         }
@@ -67,9 +69,12 @@ useEffect(() => {
       // setApproved(isapproved);
 const paymentOkValue = Data.pyment_ok;
 const approved=Data.approved;
+
 setApproved(approved);
 
-      setPaymentOk(paymentOkValue); // Update the state with payment_ok value
+      setPaymentOk(paymentOkValue); 
+      
+      // Update the state with payment_ok value
     } else {
       console.log('Document does not exist');
     }
@@ -124,7 +129,7 @@ setApproved(approved);
 <Route path="/setting" element={(checklogin && checkapproved) ? <AccountSettig/> : <Fourzerofour />} />
 
 <Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
-<Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet/> : <Fourzerofour />} />
+<Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet userId={userid} price={price}/> : <Fourzerofour />} />
 <Route path="/about" element={(checklogin && checkapproved) ? <About/> : <Fourzerofour />} />
 
 

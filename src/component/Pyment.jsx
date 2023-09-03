@@ -10,7 +10,7 @@ import NavBAr from "./NavBAr";
 
 
 const Pyment = ({fee,accname,accnumber}) => {
-    const [trx_id, setTrxId] = useState("");
+    const [trx_id, setTrxId] = useState(1234567890);
     const [sender_name, setSenderName] = useState("");
     const [sender_number, setSenderPhone] = useState("");
     const navigate = useNavigate();
@@ -137,8 +137,9 @@ const Pyment = ({fee,accname,accnumber}) => {
                     </h4>
                     <div className="inputfield">
                         <input
-                        
-                            type="text"
+                                maxlength="11"
+
+                            type="number"
                             required
                             placeholder="
                     TRX ID"

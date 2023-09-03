@@ -10,7 +10,7 @@
     gap: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.123);
     border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(0, 81, 255);
     margin-top: 20px;
   }
   
@@ -20,7 +20,7 @@
   .notificationHeading {
     color: black;
     font-weight: 600;
-    font-size: 0.7em;
+    font-size: 0.8em;
   }
   
   .notificationPara {
@@ -67,12 +67,13 @@
     flex-direction: column;
   }
   .coins-container{
-    width: 98%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-border: 1px solid crimson;
 padding: 20px;
 gap: 20px;
+background: #e9e9e9;
+border-radius: 16px;
   }
   .xee-coin{
     width: 50%;
@@ -81,6 +82,12 @@ gap: 20px;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    background: #fced6a;
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .xee-coin>h3 , .extra-xee-coin>h3{
+    color: #f66871;
   }
   .extra-xee-coin{
     width: 50%;
@@ -89,6 +96,9 @@ gap: 20px;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    background: #ffb936;
+padding: 10px;
+border-radius: 12px;
 
   }
 .xee-coin-btn {
@@ -116,4 +126,11 @@ gap: 20px;
     align-items: center;
     justify-content: center;
     gap: 10px;
+  }
+  .para {
+    margin: 20px 10px 20px 10px;
+  }
+  .head{
+    margin: 20px 10px 20px 10px;
+
   }

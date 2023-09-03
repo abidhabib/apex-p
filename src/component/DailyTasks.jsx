@@ -41,7 +41,7 @@ useEffect(() => {
     fetchProducts();
   }, []);
 
-  const handleCollectClick = async (productId, rewardAmount) => {
+  const handleCollectClick = async (productId, rewardAmount, productLink) => {
     const userDocRef = doc(db, 'users', userId);
     const clickedButtonsCollection = collection(userDocRef, 'clickedButtons');
     
@@ -65,7 +65,8 @@ useEffect(() => {
         // Update the user's balance
         await setDoc(userDocRef, { balance: updatedBalance }, { merge: true });
   
-        // Perform any other actions, e.g., redirect user to the product link
+        // Open the product link in a new tab
+        window.open(productLink, '_blank');
       }
     } catch (error) {
       console.error('Error handling button click:', error);
@@ -78,7 +79,8 @@ useEffect(() => {
     <>
       <NavBAr />
       <div>
-        <h1>All Products</h1>
+        <h1 className='head'>Your's Tasks 🤹</h1>
+        <p className='para'>Get ready to complete tasks and win exciting rewards on our website! Stay tuned for more details tomorrow.</p>
         {products.map((product) => (
 
          <div key={product.id} className="notificationCard">
@@ -87,11 +89,9 @@ useEffect(() => {
             <div className="buttonContainer">
             <button
   className="AllowBtn"
-  onClick={() => handleCollectClick(product.id, product.reward)}
+  onClick={() => handleCollectClick(product.id, product.reward, product.Link)}
 >
-  <a href={product.Link}  rel="noopener noreferrer">
-    Collect 
-  </a>
+  Collect 🎁
 </button>
             </div>
           </div>

@@ -253,13 +253,18 @@ const UserDashboard = () => {
                     <div className="earning-sec">
                      
                         <div className="slider-container">
-                            <div className="slider">
-                                <SimpleImageSlider
-                                    width={399}
-                                    height={200}
-                                    images={images}
-                                    autoPlay={true}
-                                />
+                            <div className="slider" >
+                             
+                             <SimpleImageSlider 
+                               
+                               width={399}
+                               height={200}
+                               images={images}
+                               autoPlay={true}
+                               bgColor="rgb(255 255 255 / 0%)"
+                               animationType="fade"
+                               
+                           />
                             </div>
                         </div>
                     </div>
