@@ -75,7 +75,7 @@ const Signup = () => {
         approved: false,
         bank_name: "Bank Name",
         account_title: "Account Holder Name",
-        account_number: "Account Number",
+        account_number:1234567890,
         pyment_ok: false,
         // You can add more user-related data here
       });

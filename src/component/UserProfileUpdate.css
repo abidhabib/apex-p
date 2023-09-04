@@ -2,12 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f2f2f2;
 }
 
 .form-box {
     max-width: 400px;
-    background:#a0a0a0;
+    background:#e2e2e2;
     overflow: hidden;
     border-radius: 16px;
     color: #010101;
@@ -44,10 +43,8 @@
   .form-container {
     overflow: hidden;
     border-radius: 8px;
-    background-color: #dddddd;
     margin: 1rem 0 .5rem;
     width: 100%;
-    box-shadow: rgb(0 0 0 / 8%) 0 0 0 1px;
     height: 70vh;
   }
   
@@ -142,3 +139,33 @@
 }
 
 
+.coolinput {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  position: static;
+  max-width: 400px;
+}
+
+.coolinput label.text {
+  font-size: .9rem;
+  color: #001aff;
+  position: relative;
+  top: 0.5rem;
+
+  padding: 0 3px;
+  width: fit-content;
+}
+
+.coolinput input[type=text].input {
+  padding: 11px 10px;
+  font-size: 0.75rem;
+  border: 1px #000000 solid;
+  border-radius: 5px;
+  background: #e8e8e8;
+  width: 300px;
+}
+
+.coolinput input[type=text].input:focus {
+  outline: none;
+}
