@@ -7,13 +7,17 @@ import { useAuth } from "../context/UserAuthContext";
 import { db } from "./../firebase.config";
 import { doc, updateDoc } from "firebase/firestore";
 import NavBAr from "./NavBAr";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Pyment = ({fee,accname,accnumber}) => {
-    const [trx_id, setTrxId] = useState(1234567890);
+    const [trx_id, setTrxId] = useState();
     const [sender_name, setSenderName] = useState("");
-    const [sender_number, setSenderPhone] = useState("");
+    const [sender_number, setSenderPhone] = useState();
     const navigate = useNavigate();
+
+ 
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -43,11 +47,31 @@ const Pyment = ({fee,accname,accnumber}) => {
         }
     };
 
+    const showToast = (message) => {
+        toast.error(message);
+    };
+
+    const validateTrxId = () => {
+        if (trx_id.length < 11) {
+            showToast("Enter Correct TRX ID ⚡");
+            return false;
+        }
+        return true;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateTrxId()) {
+            handleFormSubmit(e);
+        }
+    };
+
+
     return (
         <>
             <div className="box">        <NavBAr/>
 
-                <form className="form"  onSubmit={handleFormSubmit}>
+                <form className="form"  onSubmit={handleSubmit}>
                    
 
                     <h2>Submit Your Transaction Details Carefully</h2>
@@ -58,7 +82,7 @@ const Pyment = ({fee,accname,accnumber}) => {
                             marginBottom: "20px",
                         }}
                     >
-                        Joining Fee {fee} PKR
+                        Joining Fee <span style={{fontSize:"24px",fontWeight:"bold",color:"white"}}>{fee}$</span>
                     </h3>
                     <ul className="lists">
                         <li className="list">
@@ -136,8 +160,10 @@ const Pyment = ({fee,accname,accnumber}) => {
                         Transaction Information
                     </h4>
                     <div className="inputfield">
+                    <label  className='laber' htmlFor="trx">Enter Trx_ID</label>    
+
                         <input
-                                maxlength="11"
+                                minLength="11"
 
                             type="number"
                             required
@@ -148,17 +174,21 @@ const Pyment = ({fee,accname,accnumber}) => {
                         />
                     </div>
                     <div className="inputfield">
+                    <label  className='laber' htmlFor="trx">Eender Name</label>    
+
                         <input
                             type="text"
                             required
-                            placeholder="Sender Name"
+                            placeholder="John Doe"
                             value={sender_name}
                             onChange={(e) => setSenderName(e.target.value)}
                         />
                     </div>
                     <div className="inputfield">
+                    <label  className='laber' htmlFor="trx">Sender Number</label>    
+
                         <input
-                            type="text"
+                            type="number"
                             required
                             placeholder="Sender #Phone"
                             name="phoneNumber"
@@ -172,6 +202,8 @@ const Pyment = ({fee,accname,accnumber}) => {
   </div>
                 </form>
             </div>
+            <ToastContainer />
+
         </>
     );
 };

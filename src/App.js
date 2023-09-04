@@ -31,6 +31,7 @@ const [jfees, setFees] = useState(null);
 const [accname, setAccname] = useState('');
 const [accnumber, setAccnumber] = useState('');
 const [price , setPrice] = useState(0);
+const [img,setImg]=useState('');
 useEffect(() => {
   if (userid) {
     const docRef = doc(db, 'settings', 'KFwh6z2LS0msPDnZRaLq');
@@ -42,6 +43,7 @@ useEffect(() => {
           setAccnumber(joiningFee.accnumber);
           setFees(joiningFee.fees);
           setPrice(joiningFee.coinPrice);
+          setImg(joiningFee.imageUrl);
         } else {
           console.log('Document does not exist');
         }
@@ -130,7 +132,7 @@ setApproved(approved);
 
 <Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
 <Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet userId={userid} price={price}/> : <Fourzerofour />} />
-<Route path="/about" element={(checklogin && checkapproved) ? <About/> : <Fourzerofour />} />
+<Route path="/about" element={(checklogin && checkapproved) ? <About img={img}/> : <Fourzerofour />} />
 
 
             {/* Use a ternary operator for conditional rendering */}

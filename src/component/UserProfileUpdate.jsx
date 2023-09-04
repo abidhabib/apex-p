@@ -144,7 +144,10 @@ const UserProfileUpdate = () => {
 
           <form className="form-update" onSubmit={handleSubmit}>
             <span className="title">Update Profile</span>
-            <div className="form-container">
+            <div className="coolinput">
+            <label for="name" className="text">
+                  Full Name
+                </label>
               <input
                 type="text"
                 className="input"
@@ -152,14 +155,20 @@ const UserProfileUpdate = () => {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
+               <label for="name" className="text">
+                  Email
+                </label>
               <input
-                type="email"
+                type="text"
                 className="input"
                 placeholder="Email"
                 disabled
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+               <label for="name" className="text">
+                  Country
+                </label>
               <input
                 type="text"
                 className="input"
@@ -167,7 +176,10 @@ const UserProfileUpdate = () => {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               />
-              <input type="file"  id="fileInput"  onChange={handlePic} />
+               <label for="name" className="text">
+                  Select Profile Picture
+                </label>
+              <input  className='input' type="file"  id="fileInput"  onChange={handlePic} />
               {!imgUrl && (
                 <div className="outerbar">
                   <div
@@ -190,6 +202,7 @@ const UserProfileUpdate = () => {
               </div>
             )}
           </form>
+          
         </div>
       </div>
     </>

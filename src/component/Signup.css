@@ -69,8 +69,8 @@
   width: 100%;
   margin-top: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
 .form .inputfield input,
@@ -91,7 +91,7 @@
 
 .form .inputfield input::placeholder,
 .form .inputfield select::placeholder {
-  color: #4a4a4a;
+  color: #cecbcb;
   text-transform: capitalize;
 }
 
@@ -132,7 +132,7 @@
 
 @media (max-width: 600px) {
   .box {
-    max-width: 356px;
+    max-width: 400px;
   }
   .imglogo {
   }
@@ -143,3 +143,8 @@
   color: rgb(255, 255, 255);
 }
 
+
+.laber{
+  color: rgb(255, 255, 255);
+  margin-bottom: 5px;
+}

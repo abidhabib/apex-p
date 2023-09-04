@@ -4,8 +4,9 @@ import { collection, addDoc, doc, setDoc, runTransaction} from 'firebase/firesto
 import { Link, useNavigate } from 'react-router-dom';
 // Import necessary Firebase and context imports
 import { useAuth } from '../context/UserAuthContext';
-import { db } from './../firebase.config'; // Make sure to import your Firebase configuration
+import { db } from '../firebase.config'; // Make sure to import your Firebase configuration
 import './Signup.css';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -77,11 +78,13 @@ const Signup = () => {
         account_title: "Account Holder Name",
         account_number:1234567890,
         pyment_ok: false,
+        bank_balance:0,
         // You can add more user-related data here
       });
-  
-      alert('Your Account Created Successfully');
-      navigate('/');
+  toast.success('Account Created Successfully', {
+    autoClose: 2000
+  });
+      navigate('/pyment');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setError('Email already in use, try another email');
@@ -99,27 +102,55 @@ const Signup = () => {
     <form onSubmit={SubmitHandler} className="form">
         <h2>Registration Form</h2>
         <div className="inputfield">
-            <input type="text" required placeholder="Full Name" value={user.name} name='name' onChange={UserHandler} />
+<label  className='laber' htmlFor="name">Full Name</label>    
+
+        <input type="text" required placeholder="Full Name" value={user.name} name='name' onChange={UserHandler} />
         </div>
         <div className="inputfield">
+        <label className='laber' htmlFor="email">Email</label>    
             <input type="text" required placeholder="Email" value={user.email} name='email' onChange={UserHandler} />
         </div>
         <div className="inputfield">
-            <input type="text" required placeholder="Phone Number" value={user.phoneNumber} name='phoneNumber' onChange={UserHandler} />
+        <label  className='laber' htmlFor="phone">#Phone</label>    
+
+            <input type="number" required placeholder="+933123456789" value={user.phoneNumber} name='phoneNumber' onChange={UserHandler} />
         </div>
         <div className="inputfield">
+        <label  className='laber' htmlFor="dob">Date of Birth</label>    
+
             <input type="date" required placeholder="Date of Birth" value={user.dateOfBirth} name='dateOfBirth' onChange={UserHandler} />
         </div>
         <div className="inputfield">
-            <input type="text" required placeholder="Country" value={user.country} name='country' onChange={UserHandler} />
+        <label  className='laber' htmlFor="country">Country</label>    
+
+        <select name='country' value={user.country} onChange={UserHandler}>
+            <option value=''>Country</option>
+            <option value='Pakistan'>Pakistan</option>
+
+            <option value='India'>India</option>
+<option value='United States'>United States</option>
+<option value='United Kingdom'>United Kingdom</option>
+<option value='Afghanistan'>Afghanistan</option>
+<option value='Albania'>Albania</option>
+<option value='Algeria'>Algeria</option>
+<option value='Andorra'>Andorra</option>
+            <option value='Canada'>Canada</option>
+            <option value='Australia'>Australia</option>
+
+          </select>        </div>
+        <div className="inputfield">
+        <label  className='laber' htmlFor="city">City</label>    
+
+            <input type="text" required placeholder="New York" value={user.city} name='city' onChange={UserHandler} />
         </div>
         <div className="inputfield">
-            <input type="text" required placeholder="City" value={user.city} name='city' onChange={UserHandler} />
+        <label  className='laber' htmlFor="adrs">Address</label>    
+
+            <input type="text" required placeholder="Street Address" value={user.completeAddress} name='completeAddress' onChange={UserHandler} />
         </div>
         <div className="inputfield">
-            <input type="text" required placeholder="Complete Address" value={user.completeAddress} name='completeAddress' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
+        <label  className='laber' htmlFor="gender">Gender</label>    
+
           <select name='gender' value={user.gender} onChange={UserHandler}>
             <option value=''>Select Gender</option>
             <option value='Male'>Male</option>
@@ -127,10 +158,14 @@ const Signup = () => {
           </select>
         </div>
         <div className="inputfield">
-            <input type="password" required placeholder="Password" value={user.password} name='password' onChange={UserHandler} />
+        <label  className='laber' htmlFor="pass">Password</label>    
+
+            <input type="password" required placeholder="*********" value={user.password} name='password' onChange={UserHandler} />
         </div>
         <div className="inputfield">
-            <input type="password" required placeholder="Confirm Password" value={user.confirmPassword} name='confirmPassword' onChange={UserHandler} />
+        <label  className='laber' htmlFor="rpass">Retype Password</label>    
+
+            <input type="password" required placeholder="**********" value={user.confirmPassword} name='confirmPassword' onChange={UserHandler} />
         </div>
         <div className="checkbox">
             <label>

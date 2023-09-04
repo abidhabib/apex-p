@@ -1,16 +1,18 @@
 import NavBAr from './NavBAr';
 import './About.css';
-const Wallet = () => {
-  
+const About = ({img}) => {
+  console.log(img);
   return (
     <>
       <NavBAr />
     <div className="img-container">
 
-<img src="https://raw.githubusercontent.com/kimcoder/react-simple-image-slider/master/example/images/2.jpg" alt="" srcset="" />      
+<img src={img} alt="" srcset="" />      
     </div>
+    <button className='abt-btn'>Keep Work , Keep Earining ❤️</button>
+
     </>
   );
 };
 
-export default Wallet;
+export default About;

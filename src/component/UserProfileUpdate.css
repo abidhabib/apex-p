@@ -31,6 +31,7 @@
   /*Form text*/
   .title {
     font-weight: bold;
+    color: #f66871;
     font-size: 1.6rem;
   }
   
@@ -84,6 +85,7 @@
     background-color: #0066ff;
     color: #fff;
     border: 0;
+    width: 200px;
     border-radius: 24px;
     padding: 10px 16px;
     font-size: 1rem;
@@ -134,7 +136,7 @@
 .success-message {
   text-align: center;
   font-size: 1.2rem;
-  color: #ffffff;
+  color: #75ff25;
   margin-top: 20px;
 }
 

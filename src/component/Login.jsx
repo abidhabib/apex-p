@@ -116,10 +116,14 @@ const Login = () => {
           <h2>Sign in to Your Account.</h2>
 
           <div className="inputfield">
-            <input required type="email" placeholder="Email" value={user.email} name="email" onChange={UserHandler} />
+          <label  className='laber' htmlFor="name">Email</label>    
+
+            <input required type="email" placeholder="_abc@xyz.com" value={user.email} name="email" onChange={UserHandler} />
           </div>
 
           <div className="inputfield">
+          <label  className='laber' htmlFor="name">Password</label>    
+
             <input required type="password" placeholder="********" value={user.password} name="password" onChange={UserHandler} />
           </div>
 
