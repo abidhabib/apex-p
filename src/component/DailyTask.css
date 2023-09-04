@@ -134,3 +134,32 @@ border-radius: 12px;
     margin: 20px 10px 20px 10px;
 
   }
+  .withdrawal-requests-h>h2{
+    color: #f66871;
+  }
+  .withdrawal-requests-h{
+    width: 100%;
+  }
+  .withdrwa-requests{
+    display: flex;
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+  }
+  .withdrwa-head{
+    display: flex;
+    margin: 20px 0px ;
+    justify-content: space-around;
+    color: blue;
+    font-size: 21px;
+font-family: poppins;  }
+  .withdrwa-card{
+    background: #e9e9e9;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.123);
+    margin: 20px 0px 0px 0px ;
+align-items: center;  }
