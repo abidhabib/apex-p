@@ -37,7 +37,17 @@ const Signup = () => {
       [name]: value,
     }));
   };
-
+  const generateRandomString = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+  };
+  
+  const refer_code = generateRandomString(8);
+  
   const SubmitHandler = async (e) => {
     e.preventDefault();
     const { name, email, password, confirmPassword, phoneNumber, dateOfBirth, country, city, completeAddress, gender } = user;
@@ -79,6 +89,7 @@ const Signup = () => {
         account_number:1234567890,
         pyment_ok: false,
         bank_balance:0,
+        refer_code: refer_code
         // You can add more user-related data here
       });
   toast.success('Account Created Successfully', {
