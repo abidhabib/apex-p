@@ -1,14 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthErrorCodes } from 'firebase/auth';
-import { collection, addDoc, doc, setDoc, runTransaction} from 'firebase/firestore';
+import { collection, addDoc, doc, setDoc, runTransaction, onSnapshot} from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 // Import necessary Firebase and context imports
 import { useAuth } from '../context/UserAuthContext';
 import { db } from '../firebase.config'; // Make sure to import your Firebase configuration
 import './Signup.css';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom'
 
 const Signup = () => {
+     const { id } = useParams();
+  console.log(id);
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+  
+    const fieldsData = doc(db, 'users', `${id}`);
+    const unsubscribePayment = onSnapshot(fieldsData, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const Data = docSnapshot.data();
+  console.log(Data.name);
+        // setApproved(isapproved);
+
+        
+        // Update the state with payment_ok value
+      } else {
+        console.log('Document does not exist');
+      }
+    });
+  
+    return () => {
+      unsubscribePayment();
+    };
+  }, []);
+ 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const navigate = useNavigate();
   const { SignUp } = useAuth(); // Make sure to define the SignUp function in your context
@@ -89,7 +117,8 @@ const Signup = () => {
         account_number:1234567890,
         pyment_ok: false,
         bank_balance:0,
-        refer_code: refer_code
+        refer_code: authUser.uid,
+        // refer_by:id
         // You can add more user-related data here
       });
   toast.success('Account Created Successfully', {

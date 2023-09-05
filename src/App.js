@@ -22,6 +22,7 @@ import { Dashboard } from '@mui/icons-material';
 import DailyTasks from './component/DailyTasks';
 import Wallet from './component/Wallet';
 import About from './component/About';
+import Team from './component/Team';
 function App() {
   const [paymentOk, setPaymentOk] = useState(false); 
   const [checklogin, setCheckLogin] = useState(false);
@@ -108,7 +109,9 @@ setApproved(approved);
         <Routes>
             
             <Route index element={<Login />} />
-            <Route path="/Signup" element={<Signup />} />
+            <Route path="/signup"element={<Signup />} />
+            <Route path="/signup/:id" element={<Signup />} />
+
             <Route path="/protected" 
             element={
               <Protected>
@@ -133,6 +136,7 @@ setApproved(approved);
 <Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
 <Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet userId={userid} price={price}/> : <Fourzerofour />} />
 <Route path="/about" element={(checklogin && checkapproved) ? <About img={img}/> : <Fourzerofour />} />
+<Route path="/team" element={(checklogin && checkapproved) ? <Team userId={userid}/> : <Fourzerofour />} />
 
 
             {/* Use a ternary operator for conditional rendering */}
