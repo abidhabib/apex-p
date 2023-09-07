@@ -1,226 +1,240 @@
-import React, { useEffect, useState } from 'react';
-import { AuthErrorCodes } from 'firebase/auth';
-import { collection, addDoc, doc, setDoc, runTransaction, onSnapshot} from 'firebase/firestore';
-import { Link, useNavigate } from 'react-router-dom';
-// Import necessary Firebase and context imports
-import { useAuth } from '../context/UserAuthContext';
-import { db } from '../firebase.config'; // Make sure to import your Firebase configuration
-import './Signup.css';
-import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom'
+  import React, { useEffect, useState } from 'react';
+  import { AuthErrorCodes } from 'firebase/auth';
+  import { collection, addDoc, doc, setDoc, runTransaction, onSnapshot, getDoc} from 'firebase/firestore';
+  import { Link, useNavigate } from 'react-router-dom';
+  // Import necessary Firebase and context imports
+  import { useAuth } from '../context/UserAuthContext';
+  import { db } from '../firebase.config'; // Make sure to import your Firebase configuration
+  import './Signup.css';
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+    import { useParams } from 'react-router-dom'
 
-const Signup = () => {
-     const { id } = useParams();
-  console.log(id);
-
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
+  const Signup = () => {
+    const { id } = useParams();
+    const sender_id=id
   
-    const fieldsData = doc(db, 'users', `${id}`);
-    const unsubscribePayment = onSnapshot(fieldsData, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const Data = docSnapshot.data();
-  console.log(Data.name);
-        // setApproved(isapproved);
-
-        
-        // Update the state with payment_ok value
-      } else {
-        console.log('Document does not exist');
+    useEffect(() => {
+      if (!sender_id) {
+        return;
       }
+    
+      const fieldsData = doc(db, 'users', `${sender_id}`);
+      const unsubscribePayment = onSnapshot(fieldsData, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const Data = docSnapshot.data();
+    console.log(Data.name);
+     
+        } else {
+          console.log('Document does not exist');
+        }
+      });
+    
+      return () => {
+        unsubscribePayment();
+      };
+    }, [sender_id]);
+  
+    const [termsAccepted, setTermsAccepted] = useState(false);
+    const navigate = useNavigate();
+    const { SignUp } = useAuth(); // Make sure to define the SignUp function in your context
+    const [err, setError] = useState('');
+    const [user, setUser] = useState({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      phoneNumber: '',
+      dateOfBirth: '',
+      country: '',
+      city: '',
+      completeAddress: '',
+      gender: '',
     });
-  
-    return () => {
-      unsubscribePayment();
+
+    const TermsHandler = (e) => {
+      setTermsAccepted(e.target.checked);
     };
-  }, []);
- 
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const navigate = useNavigate();
-  const { SignUp } = useAuth(); // Make sure to define the SignUp function in your context
-  const [err, setError] = useState('');
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    phoneNumber: '',
-    dateOfBirth: '',
-    country: '',
-    city: '',
-    completeAddress: '',
-    gender: '',
-  });
 
-  const TermsHandler = (e) => {
-    setTermsAccepted(e.target.checked);
-  };
+    const UserHandler = (e) => {
+      const { name, value } = e.target;
+      setUser((prevUser) => ({
+        ...prevUser,
+        [name]: value,
+      }));
+    };
+  
+    
+    const SubmitHandler = async (e,) => {
+      e.preventDefault();
+      const { name, email, password, phoneNumber, dateOfBirth, country, city, completeAddress, gender } = user;
+    
+      // Existing validation checks
+    
+      try {
+        const { user: authUser } = await SignUp(email, password); // Existing user signup code
+    
+        // Get the next user ID using a transaction
+        const counterRef = doc(db, 'counters', 'userCounter');
+        const newUserId = await runTransaction(db, async (transaction) => {
+          const counterDoc = await transaction.get(counterRef);
+          const currentId = counterDoc.data()?.currentId || 0;
+          const newId = currentId + 1;
+          transaction.update(counterRef, { currentId: newId });
+          return newId;
+        });
+    
+        // Create the user document with the auto-incremented ID
+        await setDoc(doc(db, 'users', authUser.uid), {
+          id: newUserId,
+          name,
+          email,
+          phoneNumber,
+          dateOfBirth,
+          country,
+          city,
+          completeAddress,
+          gender,
+          createdAt: new Date(),
+          balance: 0,
+          sender_name: '',
+          sender_number: '',
+          trx_id: '',
+          approved: false,
+          bank_name: "Bank Name",
+          account_title: "Account Holder Name",
+          account_number: 1234567890,
+          pyment_ok: false,
+          bank_balance: 0,
+          refer_code: authUser.uid,
+          level: 0,
+          // You can add more user-related data here
+        });
+    
+         // Check if a valid referralCode (id) is provided
+    if (sender_id) {
+      // Check if the id exists in the 'users' collection
+      const userDocRef = doc(db, 'users', sender_id);
+      const userDocSnapshot = await getDoc(userDocRef);
 
-  const UserHandler = (e) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
-  const generateRandomString = (length) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  };
-  
-  const refer_code = generateRandomString(8);
-  
-  const SubmitHandler = async (e) => {
-    e.preventDefault();
-    const { name, email, password, confirmPassword, phoneNumber, dateOfBirth, country, city, completeAddress, gender } = user;
-  
-    // Existing validation checks
-  
-    try {
-      const { user: authUser } = await SignUp(email, password); // Existing user signup code
-  
-      // Get the next user ID using a transaction
-      const counterRef = doc(db, 'counters', 'userCounter');
-      const newUserId = await runTransaction(db, async (transaction) => {
-        const counterDoc = await transaction.get(counterRef);
-        const currentId = counterDoc.data()?.currentId || 0;
-        const newId = currentId + 1;
-        transaction.update(counterRef, { currentId: newId });
-        return newId;
-      });
-  
-      // Create the user document with the auto-incremented ID
-      await setDoc(doc(db, 'users', authUser.uid), {
-        id: newUserId,
-        name,
-        email,
-        phoneNumber,
-        dateOfBirth,
-        country,
-        city,
-        completeAddress,
-        gender,
-        createdAt: new Date(),
-        balance: 0,
-        sender_name: '',
-        sender_number: '',
-        trx_id: '',
-        approved: false,
-        bank_name: "Bank Name",
-        account_title: "Account Holder Name",
-        account_number:1234567890,
-        pyment_ok: false,
-        bank_balance:0,
-        refer_code: authUser.uid,
-        // refer_by:id
-        // You can add more user-related data here
-      });
-  toast.success('Account Created Successfully', {
-    autoClose: 2000
-  });
-      navigate('/pyment');
-    } catch (err) {
-      if (err.code === 'auth/email-already-in-use') {
-        setError('Email already in use, try another email');
-      } else if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
-        setError('Password must be at least 6 characters');
+      if (userDocSnapshot.exists()) {
+        // The 'id' exists in the 'users' collection, so we add the user to 'teamMembers'
+        await addDoc(collection(db, 'teamMembers'), {
+          referrerId: sender_id,
+          userId: authUser.uid,
+          name: name,
+          createdAt: new Date(),
+          // Add other relevant data about the team member
+        });
       } else {
-        setError(err.message);
+        // The 'id' doesn't exist in the 'users' collection
+        toast.error('Invalid referral code. Please enter a valid referral code.');
+        return; // Exit the function
       }
     }
+    
+        toast.success('Account Created Successfully', {
+          autoClose: 2000
+        });
+        navigate('/disclamer');
+      } catch (err) {
+        if (err.code === 'auth/email-already-in-use') {
+          toast.error('Email already in use, try another email');
+        } else if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
+          toast.error('Password must be at least 6 characters');
+        } else {
+          setError(err.message);
+        }
+      }
+    };
+    return (
+      <>
+      <ToastContainer/>
+      <div className='box'>
+      {err && <p className='error'>{err}</p>}
+      <form onSubmit={SubmitHandler} className="form">
+          <h2>Registration Form</h2>
+          <div className="inputfield">
+  <label  className='laber' htmlFor="name">Full Name</label>    
+
+          <input type="text" required placeholder="Full Name" value={user.name} name='name' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label className='laber' htmlFor="email">Email</label>    
+              <input type="text" required placeholder="Email" value={user.email} name='email' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="phone">#Phone</label>    
+
+              <input type="number" required placeholder="+933123456789" value={user.phoneNumber} name='phoneNumber' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="dob">Date of Birth</label>    
+
+              <input type="date" required placeholder="Date of Birth" value={user.dateOfBirth} name='dateOfBirth' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="country">Country</label>    
+
+          <select name='country' value={user.country} onChange={UserHandler}>
+              <option value=''>Country</option>
+              <option value='Pakistan'>Pakistan</option>
+
+              <option value='India'>India</option>
+  <option value='United States'>United States</option>
+  <option value='United Kingdom'>United Kingdom</option>
+  <option value='Afghanistan'>Afghanistan</option>
+  <option value='Albania'>Albania</option>
+  <option value='Algeria'>Algeria</option>
+  <option value='Andorra'>Andorra</option>
+              <option value='Canada'>Canada</option>
+              <option value='Australia'>Australia</option>
+
+            </select>        </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="city">City</label>    
+
+              <input type="text" required placeholder="New York" value={user.city} name='city' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="adrs">Address</label>    
+
+              <input type="text" required placeholder="Street Address" value={user.completeAddress} name='completeAddress' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="gender">Gender</label>    
+
+            <select name='gender' value={user.gender} onChange={UserHandler}>
+              <option value=''>Select Gender</option>
+              <option value='Male'>Male</option>
+              <option value='Female'>Female</option>
+            </select>
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="pass">Password</label>    
+
+              <input type="password" required placeholder="*********" value={user.password} name='password' onChange={UserHandler} />
+          </div>
+          <div className="inputfield">
+          <label  className='laber' htmlFor="rpass">Retype Password</label>    
+
+              <input type="password" required placeholder="**********" value={user.confirmPassword} name='confirmPassword' onChange={UserHandler} />
+          </div>
+          <div className="checkbox">
+              <label>
+                  <input type="checkbox" required checked={termsAccepted} onChange={TermsHandler} />
+                  &nbsp;  I accept the terms and conditions
+              </label>
+          </div>
+          <div className="inputfield">
+              <input type="submit" />
+          </div>
+          <p className="forget">Already Have an account? <Link to={"/"} className="link">{"Login"}</Link></p>
+          
+      </form>
+  </div>
+  </>
+    );
   };
-  
-  return (
-    <div className='box'>
-    {err && <p className='error'>{err}</p>}
-    <form onSubmit={SubmitHandler} className="form">
-        <h2>Registration Form</h2>
-        <div className="inputfield">
-<label  className='laber' htmlFor="name">Full Name</label>    
 
-        <input type="text" required placeholder="Full Name" value={user.name} name='name' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label className='laber' htmlFor="email">Email</label>    
-            <input type="text" required placeholder="Email" value={user.email} name='email' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="phone">#Phone</label>    
-
-            <input type="number" required placeholder="+933123456789" value={user.phoneNumber} name='phoneNumber' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="dob">Date of Birth</label>    
-
-            <input type="date" required placeholder="Date of Birth" value={user.dateOfBirth} name='dateOfBirth' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="country">Country</label>    
-
-        <select name='country' value={user.country} onChange={UserHandler}>
-            <option value=''>Country</option>
-            <option value='Pakistan'>Pakistan</option>
-
-            <option value='India'>India</option>
-<option value='United States'>United States</option>
-<option value='United Kingdom'>United Kingdom</option>
-<option value='Afghanistan'>Afghanistan</option>
-<option value='Albania'>Albania</option>
-<option value='Algeria'>Algeria</option>
-<option value='Andorra'>Andorra</option>
-            <option value='Canada'>Canada</option>
-            <option value='Australia'>Australia</option>
-
-          </select>        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="city">City</label>    
-
-            <input type="text" required placeholder="New York" value={user.city} name='city' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="adrs">Address</label>    
-
-            <input type="text" required placeholder="Street Address" value={user.completeAddress} name='completeAddress' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="gender">Gender</label>    
-
-          <select name='gender' value={user.gender} onChange={UserHandler}>
-            <option value=''>Select Gender</option>
-            <option value='Male'>Male</option>
-            <option value='Female'>Female</option>
-          </select>
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="pass">Password</label>    
-
-            <input type="password" required placeholder="*********" value={user.password} name='password' onChange={UserHandler} />
-        </div>
-        <div className="inputfield">
-        <label  className='laber' htmlFor="rpass">Retype Password</label>    
-
-            <input type="password" required placeholder="**********" value={user.confirmPassword} name='confirmPassword' onChange={UserHandler} />
-        </div>
-        <div className="checkbox">
-            <label>
-                <input type="checkbox" required checked={termsAccepted} onChange={TermsHandler} />
-                &nbsp;  I accept the terms and conditions
-            </label>
-        </div>
-        <div className="inputfield">
-            <input type="submit" />
-        </div>
-        <p className="forget">Already Have an account? <Link to={"/"} className="link">{"Login"}</Link></p>
-        
-    </form>
-</div>
-  );
-};
-
-export default Signup;
+  export default Signup;

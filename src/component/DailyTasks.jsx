@@ -15,7 +15,6 @@ import { db } from '../firebase.config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './DailyTask.css';
-import { CollectionsSharp, Money } from '@mui/icons-material';
 
 const DailyTasks = ({ userId }) => {
   const [products, setProducts] = useState([]);
