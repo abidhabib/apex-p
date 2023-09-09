@@ -128,13 +128,13 @@ const AccountSettig = () => {
                 <label for="name" className="text">
                   Bank Name
                 </label>
-                <input
-               type="text"
-               className="input"
-               placeholder="Bank Name"
-               value={bankname}
-               onChange={(e) => setBankname(e.target.value)}
-                />
+                <select             className="input"
+ name='bankname' value={bankname}   onChange={(e) => setBankname(e.target.value)}>
+              <option value=''>Set Bank</option>
+              <option value='EasyPaisa'>EasyPaisa</option>
+              <option value='JazzCash'>JazzCash</option>
+            </select>
+          
 
 
                 <label for="number" className="text">
