@@ -19,7 +19,6 @@ const Team = ({ userId }) => {
   const [teamMembers, setTeamMembers] = useState([]);
   let memCounter = 1;
   const myLink = `localhost:3000/signup/${userId}`;
-
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
@@ -29,34 +28,48 @@ const Team = ({ userId }) => {
           where("referrerId", "in", [userId])
         );
         const teamMemberSnapshot = await getDocs(teamMemberQuery);
-        const filteredTeamMembers = teamMemberSnapshot.docs.map(doc => doc.data());
-        setTeamMembers(filteredTeamMembers);
-
+        const firstLevelTeamMembers = teamMemberSnapshot.docs.map(doc => doc.data());
+        setTeamMembers(firstLevelTeamMembers);
+  
+        // Log first-level members
+        console.log("First Level Members:", firstLevelTeamMembers);
+  
         // Check the number of team members
-        const numberOfMembers = filteredTeamMembers.length;
-
+        const numberOfMembers = firstLevelTeamMembers.length;
+  
         // Update user's level based on the number of members
         if (numberOfMembers <= 5) {
           await updateLevelInFirestore(userId, 1);
         } else if (numberOfMembers >= 5 && numberOfMembers <= 10) {
           await updateLevelInFirestore(userId, 2);
-        }
-         else if (numberOfMembers >= 10 && numberOfMembers <= 15) {
+        } else if (numberOfMembers >= 10 && numberOfMembers <= 15) {
           await updateLevelInFirestore(userId, 3);
-        }
-        else if (numberOfMembers >= 15 && numberOfMembers <= 20) {
+        } else if (numberOfMembers >= 15 && numberOfMembers <= 20) {
           await updateLevelInFirestore(userId, 4);
-        }
-        else if (numberOfMembers >= 20) {
+        } else if (numberOfMembers >= 20) {
           await updateLevelInFirestore(userId, 5);
+        }
+  
+        // Fetch second-level referrals for each first-level member
+        for (const firstLevelMember of firstLevelTeamMembers) {
+          const secondLevelQuery = query(
+            teamMembersCollection,
+            where("referrerId", "==", firstLevelMember.userId)
+          );
+          const secondLevelSnapshot = await getDocs(secondLevelQuery);
+          const secondLevelTeamMembers = secondLevelSnapshot.docs.map(doc => doc.data());
+  
+          // Log second-level members for each first-level member
+          console.log(`Second Level Members for ${firstLevelMember.name}:`, secondLevelTeamMembers);
         }
       } catch (error) {
         console.error('Error fetching team members:', error);
       }
     };
-
+  
     fetchTeamMembers();
   }, [userId]);
+  
 
   // Function to update the user's level in Firestore
   const updateLevelInFirestore = async (userId, newLevel) => {
