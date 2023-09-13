@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { onSnapshot, doc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { auth, db } from '../firebase.config';
 import './Signup.css';
 import { useAuth } from '../context/UserAuthContext';
@@ -20,17 +20,26 @@ const Login = () => {
   });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCheckLogin(true);
-        setUserId(user.uid);
-        console.log(checkLogin + '111hahah');
-      } else {
-        setUserId(null);
-      }
-    });
+    const authPersistence = setPersistence(auth, browserLocalPersistence);
 
-    return () => unsubscribe();
+    authPersistence
+      .then(() => {
+        // Local persistence is enabled. You can listen to auth state changes.
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setCheckLogin(true);
+            setUserId(user.uid);
+            console.log(checkLogin + '111hahah');
+          } else {
+            setUserId(null);
+          }
+        });
+
+        return () => unsubscribe();
+      })
+      .catch((error) => {
+        console.error('Error setting auth persistence:', error);
+      });
   }, []);
 
   useEffect(() => {
@@ -77,9 +86,11 @@ const Login = () => {
       const loggedIn = await UserLogin(email, password);
 
       if (loggedIn) {
-        if (checkApproved===true) {
+        if (checkApproved === true && paymentOk === true) {
+          console.log("checkApproved:", checkApproved);
+          console.log("paymentOk:", paymentOk);
           navigate('/dashboard');
-        } else if (paymentOk===true) {
+        } else if (paymentOk === true) {
           navigate('/processing');
         } else {
           navigate('/disclamer');
@@ -102,7 +113,6 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className="main-login">
       <div className="box">
@@ -116,13 +126,13 @@ const Login = () => {
           <h2>Sign in to Your Account.</h2>
 
           <div className="inputfield">
-          <label  className='laber' htmlFor="name">Email</label>    
+            <label className='laber' htmlFor="name">Email</label>
 
             <input required type="email" placeholder="_abc@xyz.com" value={user.email} name="email" onChange={UserHandler} />
           </div>
 
           <div className="inputfield">
-          <label  className='laber' htmlFor="name">Password</label>    
+            <label className='laber' htmlFor="name">Password</label>
 
             <input required type="password" placeholder="********" value={user.password} name="password" onChange={UserHandler} />
           </div>
