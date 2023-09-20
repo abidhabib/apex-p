@@ -185,8 +185,22 @@ justify-content: center;
 text-align: center;
 font-size: 10px;
 
-    
+    position: relative;
    }
+   .count{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #000000;
+    position: absolute;
+    z-index: 1;
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.17);
+    top:1;
+    right: 1;
+    text-align: center;
+    color: white;
+  }
    .cards1{
 margin-left: 12px;   }
    .card2{

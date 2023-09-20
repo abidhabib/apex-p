@@ -240,6 +240,9 @@ const UserDashboard = ({ userId ,Domain}) => {
                             </div>
                             <div className="card">
                                 <div className="img-text">
+                                    <div className="count">
+                                        {"1"}
+                                    </div>
                                 <Link to="/notice" className="img-text">
                                     <img
                                         style={{
