@@ -291,9 +291,22 @@ width: 400px;
           }
           .right-sec{
             height: 130px;
-            background-color: #7ecaf7;
-            border-radius: 12px;
             width: 50%;
-            
-          }
-       
+            border-radius: 12px;
+           background-image: url(../imgs/invt.jpg); 
+background-size: cover; 
+display: flex;
+justify-content: center;
+align-items: center;     
+}
+         .right-sec>h3{
+font-size: 3em;
+          width: 100%;
+height: 120px;
+border-radius: 12px;
+text-align: center;
+color: #ffffff;
+-webkit-text-fill-color: transparent;
+ -webkit-text-stroke-width: 1px;
+ letter-spacing: 3px;
+}

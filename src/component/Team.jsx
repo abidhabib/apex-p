@@ -15,10 +15,10 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase.config';
 
-const Team = ({ userId }) => {
+const Team = ({ userId,Domain }) => {
   const [teamMembers, setTeamMembers] = useState([]);
   let memCounter = 1;
-  const myLink = `localhost:3000/signup/${userId}`;
+  const myLink = `${Domain}/signup/${userId}`;
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {

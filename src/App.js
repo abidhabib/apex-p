@@ -18,9 +18,13 @@ import AccountSettig from './component/AccountSetting';
 import Protected from './component/ProtectedRoute';
 import DailyTasks from './component/DailyTasks';
 import Wallet from './component/Wallet';
-import About from './component/About';
+import About from './component/Messages';
 import Team from './component/Team';
+import Notifiy from './component/Notifications';
 function App() {
+  //// Domain Name / URL
+  const Domain="localhost:3000";
+  //
   const [paymentOk, setPaymentOk] = useState(false); 
   const [checklogin, setCheckLogin] = useState(false);
   const [checkapproved, setApproved] = useState();
@@ -131,7 +135,7 @@ setApproved(approved);
              />
             <Route path="/disclamer" element={( checklogin && !paymentOk) ? <Disclamer  fee={jfees}/> : <PymentOkorNot />} />
             <Route path='/processing' element={ (checklogin && paymentOk) ? <PymentOkorNot /> : <Fourzerofour />}/>
-              <Route path='/dashboard' element={checkapproved ? <UserDashboard /> : <PymentOkorNot/>}/>
+              <Route path='/dashboard' element={checkapproved ? <UserDashboard  userId={userid} Domain={Domain}/> : <PymentOkorNot/>}/>
 
 <Route path="/profile" element={(checklogin && checkapproved) ? <UserProfileUpdate
  /> : <Fourzerofour />} />
@@ -141,8 +145,8 @@ setApproved(approved);
 <Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
 <Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet userId={userid} userAccNAme={user_acc_name} userAccNumber={user_acc_number} userAccBankName={user_acc_bank_name} price={price}/> : <Fourzerofour />} />
 <Route path="/about" element={(checklogin && checkapproved) ? <About img={img}/> : <Fourzerofour />} />
-<Route path="/team" element={(checklogin && checkapproved) ? <Team userId={userid}/> : <Fourzerofour />} />
-
+<Route path="/team" element={(checklogin && checkapproved) ? <Team userId={userid} Domain={Domain}/> : <Fourzerofour />} />
+<Route path='/notifiy' element={(checklogin && checkapproved)?<Notifiy/> :<Fourzerofour/>}/>
 
             {/* Use a ternary operator for conditional rendering */}
             {/* <Route

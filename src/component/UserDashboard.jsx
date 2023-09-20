@@ -13,14 +13,15 @@ import about from "../imgs/about.png";
 import flag from "../imgs/pakistan.png";
 import logoutbtn from "../imgs/logout.png";
 import { Link } from "react-router-dom";
-
 import { onAuthStateChanged } from "firebase/auth";
 import SimpleImageSlider from "react-simple-image-slider";
 import logo from "../imgs/logo.svg";
 import { auth } from "../firebase.config";
 import { signOut } from "firebase/auth";
-import NavBAr from "./NavBAr";
-const UserDashboard = () => {
+import toast, { Toaster } from 'react-hot-toast';
+const UserDashboard = ({ userId ,Domain}) => {
+    const myLink = `${Domain}/signup/${userId}`;
+
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -163,6 +164,8 @@ const UserDashboard = () => {
                             </div>
                             <div className="card">
                                 <div className="img-text">
+                                <Link to="/notifiy" className="img-text">
+
                                     <img
                                         style={{
                                             width: "30px",
@@ -172,6 +175,7 @@ const UserDashboard = () => {
                                         alt=""
                                     />
                                     <p>Notification</p>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +250,7 @@ const UserDashboard = () => {
                                         src={about}
                                         alt=""
                                     />
-                                    <p>ABOUT</p>
+                                    <p>Message</p>
                                 </Link>
                                 </div>
                             </div>
@@ -283,7 +287,20 @@ const UserDashboard = () => {
                     <div className="x">
                         <div className="last-sec-container">
                             <div className="left-sec"></div>
-                            <div className="right-sec"></div>
+                            <div className="right-sec"
+                            
+                            onClick={() => {
+                                navigator.clipboard.writeText(myLink);
+                                toast.success("Link Copied 🚀");
+
+                              }}
+                            >  
+                                                            <Toaster  />
+                          
+<h3>
+    Invite Friends
+</h3>
+                </div>
                         </div>
                     </div>
                 </div>
