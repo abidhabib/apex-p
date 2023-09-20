@@ -80,7 +80,7 @@ const Wallet = ({ userId, price, userAccNAme, userAccNumber, userAccBankName }) 
       return;
     }
 
-    if (!navigated && userAccNumber === '1234567890') {
+    if (!navigated && userAccNumber === 1234567890) {
       // If it is, navigate to the "/setting" route
       navigation('/setting');
       setNavigated(true); // Set the flag to true to prevent further withdrawals

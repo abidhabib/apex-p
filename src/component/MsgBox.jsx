@@ -4,11 +4,11 @@ const MsgBox = ({Msg}) => {
   return (
 <>
 
-      <div class="info">
+      <div class="info-m">
     <div class="info__icon">
       
     </div>
-    <div class="info__title">
+    <div class="info__title-m">
 <p>
 {Msg}</p>
 

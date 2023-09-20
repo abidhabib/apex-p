@@ -6,15 +6,12 @@ const About = ({img}) => {
   return (
     <>
       <NavBAr />
-      <h2 className="msg">
+      <h2 className="msg-m">
         Messages From Admin
       </h2>
-      <div className="msg-box">
+      <div className="msg-box-m">
       <MsgBox/>
-     <MsgBox Msg={"Hello"}/>
-     <MsgBox Msg={"Hello Jani"}/>
-     <MsgBox/>
-     <MsgBox/>
+    
      
      <MsgBox/>
       </div>
