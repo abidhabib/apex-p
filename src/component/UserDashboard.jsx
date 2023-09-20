@@ -240,7 +240,7 @@ const UserDashboard = ({ userId ,Domain}) => {
                             </div>
                             <div className="card">
                                 <div className="img-text">
-                                <Link to="/about" className="img-text">
+                                <Link to="/notice" className="img-text">
                                     <img
                                         style={{
                                             width: "34px",

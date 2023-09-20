@@ -37,6 +37,7 @@ const [img,setImg]=useState('');
 const [user_acc_number, setUserAccNumber] = useState();
 const [user_acc_name , setUserAccName] = useState();
 const [user_acc_bank_name, setUserAccBankName] = useState();
+const [msg, setMsg] = useState({});
 useEffect(() => {
   if (userid) {
     const docRef = doc(db, 'settings', 'KFwh6z2LS0msPDnZRaLq');
@@ -79,13 +80,15 @@ const approved=Data.approved;
 const userAccNum=Data.account_number;
 const userAccNAme=Data.account_title;
 const userAccBankName=Data.bank_name;
+const adminMsData=Data.latestNotice;
 setUserAccBankName(userAccBankName);
 setUserAccNumber(userAccNum);
 setUserAccName(userAccNAme);
 setApproved(approved);
 
       setPaymentOk(paymentOkValue); 
-      
+      setMsg([adminMsData.message]);
+
       // Update the state with payment_ok value
     } else {
       console.log('Document does not exist');
@@ -96,7 +99,6 @@ setApproved(approved);
     unsubscribePayment();
   };
 }, [userid]);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -111,6 +113,7 @@ setApproved(approved);
       unsubscribe();
     };
   }, []);
+
   return (
     
     <UserAuthContext>
@@ -144,7 +147,7 @@ setApproved(approved);
 
 <Route path="/dailytasks" element={(checklogin && checkapproved) ? <DailyTasks userId={userid}/> : <Fourzerofour />} />
 <Route path="/wallet" element={(checklogin && checkapproved) ? <Wallet userId={userid} userAccNAme={user_acc_name} userAccNumber={user_acc_number} userAccBankName={user_acc_bank_name} price={price}/> : <Fourzerofour />} />
-<Route path="/about" element={(checklogin && checkapproved) ? <About img={img}/> : <Fourzerofour />} />
+<Route path="/notice" element={(checklogin && checkapproved) ? <About msg={msg}/> : <Fourzerofour />} />
 <Route path="/team" element={(checklogin && checkapproved) ? <Team userId={userid} Domain={Domain}/> : <Fourzerofour />} />
 <Route path='/notifiy' element={(checklogin && checkapproved)?<Notifiy/> :<Fourzerofour/>}/>
 

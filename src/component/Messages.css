@@ -8,15 +8,19 @@
     justify-content: start;
     background: #509AF8;
     border-radius: 18px 18px 18px 0px;
-    box-shadow: 0px 0px 5px -3px #111;
+    box-shadow: 0px 0px 12px -3px #111;
     overflow: hidden; /* Prevents overflow */
   }
   
   .info__title-m {
-    font-weight: 500;
     font-size: 14px;
+    font-size: 18px;
+    line-height: 24px;
+    font-family: poppins;
+    padding: 12px;
     color: #fff;
-    white-space: pre-line; /* Each word will appear on a new line */
+    white-space: pre-line; 
+   /* Each word will appear on a new line */
   }
   .msg-m{
     margin: 20px;

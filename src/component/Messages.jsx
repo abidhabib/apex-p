@@ -1,8 +1,7 @@
 import NavBAr from './NavBAr';
 import './Messages.css';
 import MsgBox from './MsgBox';
-const About = ({img}) => {
-  console.log(img);
+const Message = ({msg}) => {
   return (
     <>
       <NavBAr />
@@ -10,14 +9,14 @@ const About = ({img}) => {
         Messages From Admin
       </h2>
       <div className="msg-box-m">
-      <MsgBox/>
+      <MsgBox Msg={msg}/>
     
      
-     <MsgBox/>
+   
       </div>
    
     </>
   );
 };
 
-export default About;
+export default Message;
