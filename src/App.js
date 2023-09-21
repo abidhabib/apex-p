@@ -38,6 +38,7 @@ const [user_acc_number, setUserAccNumber] = useState();
 const [user_acc_name , setUserAccName] = useState();
 const [user_acc_bank_name, setUserAccBankName] = useState();
 const [msg, setMsg] = useState({});
+const [msgRead,SetMsgRead]=useState(false)
 useEffect(() => {
   if (userid) {
     const docRef = doc(db, 'settings', 'KFwh6z2LS0msPDnZRaLq');
@@ -81,14 +82,14 @@ const userAccNum=Data.account_number;
 const userAccNAme=Data.account_title;
 const userAccBankName=Data.bank_name;
 const adminMsData=Data.latestNotice;
+const checkRead=Data.messageRead;
 setUserAccBankName(userAccBankName);
 setUserAccNumber(userAccNum);
 setUserAccName(userAccNAme);
 setApproved(approved);
-
+SetMsgRead(checkRead)
       setPaymentOk(paymentOkValue); 
       setMsg([adminMsData.message]);
-
       // Update the state with payment_ok value
     } else {
       console.log('Document does not exist');
@@ -138,7 +139,7 @@ setApproved(approved);
              />
             <Route path="/disclamer" element={( checklogin && !paymentOk) ? <Disclamer  fee={jfees}/> : <PymentOkorNot />} />
             <Route path='/processing' element={ (checklogin && paymentOk) ? <PymentOkorNot /> : <Fourzerofour />}/>
-              <Route path='/dashboard' element={checkapproved ? <UserDashboard  userId={userid} Domain={Domain}/> : <PymentOkorNot/>}/>
+              <Route path='/dashboard' element={checkapproved ? <UserDashboard read={msgRead} userId={userid} Domain={Domain}/> : <PymentOkorNot/>}/>
 
 <Route path="/profile" element={(checklogin && checkapproved) ? <UserProfileUpdate
  /> : <Fourzerofour />} />

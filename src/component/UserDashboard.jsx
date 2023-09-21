@@ -1,5 +1,5 @@
 import "./UserDashboard.css";
-import { doc, onSnapshot } from "firebase/firestore"; // Updated import
+import { doc, onSnapshot, updateDoc } from "firebase/firestore"; // Updated import
 import { db } from "../firebase.config";
 import { useState, useEffect } from "react";
 import profile from "../imgs/profile.png";
@@ -19,9 +19,25 @@ import logo from "../imgs/logo.svg";
 import { auth } from "../firebase.config";
 import { signOut } from "firebase/auth";
 import toast, { Toaster } from 'react-hot-toast';
-const UserDashboard = ({ userId ,Domain}) => {
+const UserDashboard = ({ userId ,Domain,read}) => {
+    console.log(read+"oooo");
     const myLink = `${Domain}/signup/${userId}`;
+const handelMsg = async () => {
+    const userDocRef = doc(db, 'users', userId);
 
+    try {
+      // Calculate the updated balance and bank_balance
+  
+
+      // Update the Firestore document
+      await updateDoc(userDocRef, {
+        messageRead: true,
+      
+      });
+    } catch (error) {
+      console.error('Error Reading Message:', error);
+    }
+  };
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -238,11 +254,12 @@ const UserDashboard = ({ userId ,Domain}) => {
 
                                 </div>
                             </div>
-                            <div className="card">
-                                <div className="img-text">
-                                    <div className="count">
-                                        {"1"}
-                                    </div>
+                            <div className="card" >
+                                <div className="img-text" onClick={handelMsg}>
+                                    <div className= {read ? "msg-min " :"" } >
+                                    <div className={read ? "count-hidden" : "count"}>
+  {1}
+</div>
                                 <Link to="/notice" className="img-text">
                                     <img
                                         style={{
@@ -255,6 +272,7 @@ const UserDashboard = ({ userId ,Domain}) => {
                                     />
                                     <p>Message</p>
                                 </Link>
+                                </div>
                                 </div>
                             </div>
                         </div></div>
